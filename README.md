@@ -1,8 +1,8 @@
 ## 요구 사항
 
 ### 개요
-- 제품 가격의 할인가를 계산해주는 api를 개발합니다.
-- request의 json body는 아래와 같습니다.
+- 제품의 할인가를 계산해주는 api를 개발합니다.
+- api request의 json body는 아래와 같습니다.
 ```json
 {
   "product" : {
@@ -12,7 +12,7 @@
   }
 }
 ```
-- response는 schema는 개별 판단, 구현하되 product의 id, origin_price, discount_price는 반드시 포함되어야 합니다. 
+- api response의 schema는 개별 판단, 구현하되 product의 id, origin_price, discount_price 필드는 반드시 포함되어야 합니다. 
 
 ### 도메인(할인정책)
 - 현재 요일이 금요일인 경우 모든 상품 10% 할인
