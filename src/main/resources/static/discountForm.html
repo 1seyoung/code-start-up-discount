@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Discount Calculator</title>
+</head>
+<body>
+<h2>Discount Calculator</h2>
+<form id="discountForm">
+    <label for="id">Product ID:</label>
+    <input type="number" id="id" name="id" required><br><br>
+
+    <label for="originPrice">Original Price:</label>
+    <input type="number" id="originPrice" name="originPrice" required><br><br>
+
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+        <option value="10">Clothing</option>
+        <option value="20">Electronics</option>
+        <option value="30">Food</option>
+    </select><br><br>
+
+    <button type="submit">Calculate Discount</button>
+    <div id="discountResult"></div>
+
+</form>
+
+<script>
+    document.getElementById("discountForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = {
+            product: {
+                id: document.getElementById("id").value,
+                orign_price: document.getElementById("originPrice").value,
+                category: document.getElementById("category").value
+            }
+        };
+
+        fetch("http://localhost:8080/api/discounts/calculate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 서버로부터 받은 응답을 화면에 표시
+                const resultElement = document.getElementById("discountResult");
+                resultElement.innerHTML = `Discount Price: ${data.discountPrice}`;
+            })
+            .catch(error => console.error("Error:", error));
+    });
+</script>
+
+</body>
+</html>

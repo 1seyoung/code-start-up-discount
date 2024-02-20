@@ -1,0 +1,10 @@
+POST http://localhost:8080/api/discounts/calculate
+Content-Type: application/json
+
+{
+  "product": {
+    "id": 1,
+    "orign_price": 1000,
+    "category": 20
+  }
+}
