@@ -1,6 +1,7 @@
 package com.whydev.saysno.discount.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import lombok.*;
 
 import jakarta.validation.constraints.Min;
@@ -17,7 +18,7 @@ import jakarta.validation.constraints.Positive;
 @Builder
 @ToString
 public class DiscountRequestDto {
-    @NotNull
+    @Valid
     private Product product;
 
     @Getter

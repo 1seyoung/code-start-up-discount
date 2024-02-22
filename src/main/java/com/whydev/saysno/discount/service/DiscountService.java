@@ -6,10 +6,13 @@ import com.whydev.saysno.discount.service.strategy.*;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -31,21 +34,30 @@ public class DiscountService {
     }
 
     public DiscountResponseDto calculateDiscount(DiscountRequestDto requestDto) {
+
         DiscountRequestDto.Product product = requestDto.getProduct();
         double originPrice = product.getOriginPrice();
 
         log.info("Calculating discount for product id: {}, category: {}, original price: {}", product.getId(), product.getCategory(), originPrice);
 
         double discountPrice = originPrice;
+
+        // 비즈니스 로직
         if (isFriday()) {
             discountPrice = fridayDiscountStrategy.calculateDiscount(discountPrice);
             log.info("Applied Friday discount: {}", discountPrice);
         }
 
-        DiscountStrategy categoryStrategy = discountStrategies.getOrDefault(product.getCategory(), new NoDiscountStrategy());
-        discountPrice = categoryStrategy.calculateDiscount(discountPrice);
-
-        log.info("Final discounted price: {}", discountPrice);
+        List<DiscountStrategy> discountStrategies = new ArrayList<>();
+        // OCP open-closed principle
+        double newDiscountPrice = 0;
+        for (DiscountStrategy strategy : discountStrategies) {
+            // SRP single responsibility principle
+            if (strategy.isSatisfied(requestDto)) {
+                newDiscountPrice += strategy.calculateDiscount(newDiscountPrice);
+                log.info("Applied discount strategy: {}", strategy.getClass().getSimpleName());
+            }
+        }
 
         return new DiscountResponseDto(product.getId(), originPrice, discountPrice);
     }
