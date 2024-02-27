@@ -8,12 +8,14 @@ WORKDIR /app
 
 
 #gi clone
-RUN apt-get update && \
-    apt-get install -y git && \
-    git clone  https://github.com/1seyoung/code-start-up-discount.git .
+#RUN apt-get update && \
+#    apt-get install -y git && \
+#    git clone  https://github.com/1seyoung/code-start-up-discount.git .
 
 # gradlew >> 권한 문제
-RUN chmod +x ./gradlew && ./gradlew build
+#RUN chmod +x ./gradlew && ./gradlew build
+
+COPY ./build/libs/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
 
 
 #base image ubunt >> jdk
@@ -21,7 +23,9 @@ FROM openjdk:17-jdk-slim-buster as run
 WORKDIR /app
 
 #copy jar in builder stage
-COPY --from=builder /app/build/libs/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
+#COPY --from=builder /app/build/libs/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
+COPY --from=builder /app/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
+
 
 #Docker Task2 : entrypoin 와 cmd
 #Docker Task3 : option 실행 시 자주 쓰는 옵션
