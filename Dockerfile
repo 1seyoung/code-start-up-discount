@@ -10,7 +10,7 @@ WORKDIR /app
 #gi clone
 RUN apt-get update && \
     apt-get install -y git && \
-    git clone -b 2week_assignment https://github.com/1seyoung/code-start-up-discount.git .
+    git clone  https://github.com/1seyoung/code-start-up-discount.git .
 
 # gradlew >> 권한 문제
 RUN chmod +x ./gradlew && ./gradlew build
