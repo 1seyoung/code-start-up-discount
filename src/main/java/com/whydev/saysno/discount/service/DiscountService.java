@@ -35,6 +35,7 @@ public class DiscountService {
 
             return new DiscountResponseDto(-1, Money.ZERO, Money.ZERO, String.join(", ", validationErrors));
         }
+
         DiscountRequestDto.Product product = requestDto.getProduct();
         Money originPrice = new Money(BigDecimal.valueOf(product.getOriginPrice()));
 
@@ -58,7 +59,7 @@ public class DiscountService {
 
     private Money applyCategoryDiscount(Money price, int category) {
         // 카테고리별 할인 적용
-        double categoryDiscountRate = Category.getDiscountRate(category);
+        double categoryDiscountRate = Category.getDiscountRate(category, price.getValue().doubleValue());
         Money categoryDiscountAmount = price.multiply(categoryDiscountRate);
         return price.subtract(categoryDiscountAmount);
     }
