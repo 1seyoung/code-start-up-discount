@@ -2,24 +2,16 @@ package com.whydev.saysno.discount.service;
 
 import com.whydev.saysno.discount.dto.request.DiscountRequestDto;
 import com.whydev.saysno.discount.dto.response.DiscountResponseDto;
-import com.whydev.saysno.discount.service.DiscountService;
-import com.whydev.saysno.discount.service.strategy.ClothingDiscountStrategy;
-import com.whydev.saysno.discount.service.strategy.DiscountStrategy;
-import com.whydev.saysno.discount.service.strategy.ElectronicsDiscountStrategy;
-import com.whydev.saysno.discount.service.strategy.FridayDiscountStrategy;
-import com.whydev.saysno.discount.service.strategy.NoDiscountStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DiscountServiceTest {
