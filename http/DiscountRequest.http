@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "product": {
     "id": 1,
-    "orign_price": -1000,
+    "orign_price": 1000,
     "category": 20
   }
 }
