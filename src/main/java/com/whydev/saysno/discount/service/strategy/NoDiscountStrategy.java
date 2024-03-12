@@ -1,9 +1,10 @@
 package com.whydev.saysno.discount.service.strategy;
 
-public class NoDiscountStrategy implements DiscountStrategy {
+import com.whydev.saysno.discount.model.Money;
+
+public class NoDiscountStrategy implements CategoryDiscountStrategy {
     @Override
-    public double calculateDiscount(double originPrice) {
-        // 할인이 적용되지 않으므로 원가를 그대로 반환
-        return originPrice;
+    public Money calculateDiscount(Money originPrice) {
+        return originPrice; // 할인 적용 안 함
     }
 }

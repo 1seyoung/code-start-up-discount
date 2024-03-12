@@ -1,5 +1,6 @@
 package com.whydev.saysno.discount.controller;
 
+import com.whydev.saysno.discount.service.DiscountRateLoader;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,12 @@ public class DiscountController {
     private static final Logger log = LoggerFactory.getLogger(DiscountController.class);
 
     private final DiscountService discountService;
+    private final DiscountRateLoader discountRateLoader; // DiscountRateLoader 인스턴스를 추가합니다.
 
     @Autowired
-    public DiscountController(DiscountService discountService) {
+    public DiscountController(DiscountService discountService, DiscountRateLoader discountRateLoader) {
         this.discountService = discountService;
+        this.discountRateLoader = discountRateLoader; // 생성자를 통해 DiscountRateLoader 주입
     }
 
     @PostMapping("/calculate")
