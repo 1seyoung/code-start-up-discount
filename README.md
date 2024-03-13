@@ -23,3 +23,22 @@
 - 서버를 실행할 `Dockerfile 작성 필수`
 - `유닛 테스트 코드 작성 필수`
 - IDE는 Intellij 권장
+
+
+### OOP
+- ocp
+- srp
+- immutable
+### Infra -> k8s
+- cluster 환경
+  - 동시성, 일관성
+- warmup - jit - actuator
+- dockerfile
+### 
+- validation
+- spring 
+### 아키텍쳐
+- 3 layer
+- hexagonal
+### 개발방법론
+- DDD

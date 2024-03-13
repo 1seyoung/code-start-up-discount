@@ -1,38 +1,22 @@
-#Docker Task1 : 멀티스테이지 빌드
+FROM  eclipse-temurin:17-jdk-jammy as builder
 
-
-#base image ubunt >> jdk
-FROM openjdk:17-jdk-slim-buster as builder
-
+COPY . /app
 WORKDIR /app
 
+RUN ./gradlew clean -x test build
 
-#gi clone
-#RUN apt-get update && \
-#    apt-get install -y git && \
-#    git clone  https://github.com/1seyoung/code-start-up-discount.git .
+FROM eclipse-temurin:17-jre-jammy as runner
 
-# gradlew >> 권한 문제
-#RUN chmod +x ./gradlew && ./gradlew build
+COPY --from=builder /app/build/libs/codestartup-1.0.jar /app/app.jar
 
-COPY ./build/libs/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
+EXPOSE 8080/tcp
 
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=sandbox", "/app/app.jar"]
 
-#base image ubunt >> jdk
-FROM openjdk:17-jdk-slim-buster as run
-WORKDIR /app
+# multi-stage build
+# cluster -> k8s -> image
+# process 격리
+# jvm option
+# env di -> yaml
 
-#copy jar in builder stage
-#COPY --from=builder /app/build/libs/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
-COPY --from=builder /app/codestartup-0.0.1-SNAPSHOT.jar /app/codestartup-0.0.1-SNAPSHOT.jar
-
-
-#Docker Task2 : entrypoin 와 cmd
-#Docker Task3 : option 실행 시 자주 쓰는 옵션
-#run app
-#CMD ["java", "-jar", "/app/codestartup-0.0.1-SNAPSHOT.jar"]
-
-#CMD : 기본 인자를 제공
-#ENTRYPOINT : 컨테이너가 시작될 때 실행되는 기본 명령을 설정
-ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app/codestartup-0.0.1-SNAPSHOT.jar"]
-
+# java -> bytecode (기계어가 아님) -> jit

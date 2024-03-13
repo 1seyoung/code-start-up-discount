@@ -29,16 +29,15 @@ public class DiscountService {
     private final Clock clock;
     private final Map<String, CategoryDiscountStrategy> discountStrategies;
     private final FridayDiscountStrategy fridayDiscountStrategy;
-    private final DiscountRateLoader discountRateLoader;
+//    private final DiscountRateLoader discountRateLoader;
 
 
 
     // 생성자에서 각 카테고리 할인 전략을 주입받습니다.
     @Autowired
-    public DiscountService(Clock clock, FridayDiscountStrategy fridayDiscountStrategy, DiscountRateLoader discountRateLoader, List<CategoryDiscountStrategy> strategies) {
+    public DiscountService(Clock clock, FridayDiscountStrategy fridayDiscountStrategy, List<CategoryDiscountStrategy> strategies) {
         this.clock = clock;
         this.fridayDiscountStrategy = fridayDiscountStrategy;
-        this.discountRateLoader = discountRateLoader;
         this.discountStrategies = strategies.stream()
                 .collect(Collectors.toMap(strategy -> strategy.getClass().getSimpleName(), Function.identity()));
     }
@@ -48,6 +47,7 @@ public class DiscountService {
         List<String> validationErrors = requestDto.validate();
         if (!validationErrors.isEmpty()) {
             log.error("Validation errors: {}", validationErrors);
+//            throw new DiscountRequestValidationException(validationErrors);
             return new DiscountResponseDto(-1, Money.ZERO, Money.ZERO, String.join(", ", validationErrors));
         }
 
@@ -55,6 +55,14 @@ public class DiscountService {
         Money originPrice = new Money(BigDecimal.valueOf(product.getOriginPrice()));
 
         log.info("Calculating discount for product id: {}, category: {}, original price: {}", product.getId(), product.getCategory(), originPrice);
+
+        // TODO: OCP
+        // discount
+//        List<DiscountPolicy> discountPolices = discountPolicyRepository.getDiscountPolices();
+//        Money totalDiscount = discountPolices.stream()
+//                .filter(discountPolicy -> discountPolicy.isSatisfied(discountRequest))
+//                .map(discountPolicy -> discountPolicy.calculate(discountRequest))
+//                .reduce(Money.ZERO, Money::add);
 
         Money discountPrice = applyDayDiscount(originPrice);
         discountPrice = applyCategoryDiscount(discountPrice, product.getCategory());

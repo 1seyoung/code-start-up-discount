@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class DiscountRateLoader {
     private Map<String, Integer> discountRates = new HashMap<>();
 
